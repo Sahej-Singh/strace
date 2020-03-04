@@ -1163,10 +1163,15 @@ main(void)
 	printf("ioctl(-1, %s, NULL) = -1 EBADF (%m)\n",
 	       XLAT_STR(VIDIOC_S_STD));
 
-	long long *const p_longlong = page_end - sizeof(*p_longlong);
+	long long *const p_longlong = tail_alloc(sizeof(*p_longlong));
+	*p_longlong = 0xdeadfacebadc0dedULL;
 	ioctl(-1, VIDIOC_S_STD, p_longlong);
-	printf("ioctl(-1, %s, [%#llx]) = -1 EBADF (%m)\n",
-	       XLAT_STR(VIDIOC_S_STD), *p_longlong);
+	printf("ioctl(-1, %s, [" XLAT_KNOWN(0xdeadfacebadc0ded,
+	       "V4L2_STD_GH|V4L2_STD_L|V4L2_STD_PAL_DK|V4L2_STD_PAL_B"
+	       "|V4L2_STD_PAL_M|V4L2_STD_PAL_Nc|V4L2_STD_PAL_60"
+	       "|V4L2_STD_SECAM_K|V4L2_STD_ATSC_16_VSB|0xdeadfaceb8000000")
+	       "]) = -1 EBADF (%m)\n",
+	       XLAT_STR(VIDIOC_S_STD));
 
 	/* VIDIOC_ENUMSTD */
 	ioctl(-1, VIDIOC_ENUMSTD, 0);

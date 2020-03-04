@@ -1021,12 +1021,20 @@ main(int argc, char **argv)
 		{ ARG_STR(VIDIOC_S_STD) },
 	};
 	static const struct strval64 stdids[] = {
-		{ ARG_STR(0) },
-		{ ARG_STR(0x1) },
-		{ ARG_STR(0xb000) },
-		{ ARG_STR(0x3ffffff) },
-		{ ARG_STR(0xffffffff) },
-		{ ARG_ULL_STR(0xbadc0deddeadface) },
+		{ ARG_XLAT_KNOWN(0, "V4L2_STD_UNKNOWN") },
+		{ ARG_XLAT_KNOWN(0x1, "V4L2_STD_PAL_B") },
+		{ ARG_XLAT_KNOWN(0xb000, "V4L2_STD_NTSC") },
+		{ ARG_XLAT_KNOWN(0x3ffffff, "V4L2_STD_ALL|V4L2_STD_ATSC") },
+		{ ARG_XLAT_KNOWN(0xffffffff,
+				 "V4L2_STD_ALL|V4L2_STD_ATSC|0xfc000000") },
+		{ ARG_XLAT_KNOWN(0xbadc0deddeadface, "V4L2_STD_GH|V4L2_STD_NTSC"
+				 "|V4L2_STD_PAL_B1|V4L2_STD_PAL_D1"
+				 "|V4L2_STD_PAL_K|V4L2_STD_PAL_N"
+				 "|V4L2_STD_PAL_60|V4L2_STD_NTSC_443"
+				 "|V4L2_STD_SECAM_B|V4L2_STD_SECAM_K1"
+				 "|V4L2_STD_SECAM_LC|V4L2_STD_ATSC_16_VSB"
+				 "|0xbadc0deddc000000") },
+		{ ARG_XLAT_UNKNOWN(0xdecaffeec0000000, "V4L2_STD_???") },
 	};
 
 	v4l2_std_id *stdid = tail_alloc(sizeof(*stdid));
